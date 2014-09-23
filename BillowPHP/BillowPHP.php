@@ -83,6 +83,7 @@ try{
   //传递构造参数（模版地址等等信息）
   $args = array(
 			'moduleName'=> $moduleName,
+			'controllerName'=>$controllerName,
            );
   $controller_instance = $refl->newInstance($args);
   $controller_instance->$methodName();

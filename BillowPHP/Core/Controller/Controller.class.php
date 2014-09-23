@@ -14,7 +14,7 @@ class Controller extends \Smarty{
 		    //调用基类Samrty构造函数
 			parent::__construct();
 	       //'基类控制器初始化';
-		   $this->templates_dir = APP_PATH.$args['moduleName'].'/View/';
+		   $this->templates_dir = APP_PATH.$args['moduleName'].'/View/'.$args['controllerName'].'/';
 		   $this->templates_c_dir = CACHE_PATH.$args['moduleName'].'/';
 			
 			//如果模版文件夹不存在怎创建
