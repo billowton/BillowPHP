@@ -2,13 +2,11 @@
 
 namespace Home\Controller;
 use BillowPHP\Controller;
-   class IndexController extends Controller{
+   class TestController extends Controller{
 	    
 		public function index(){
-			 $hello = M('hello')->select();
-			 var_dump($hello);
-			 $this->assign('test','hello smarty');
-			 //$this->display();
+			 $this->assign('test','test..控制器');
+			 $this->display();
 		}
 		
 		public function __call($methodname,$argsarr){

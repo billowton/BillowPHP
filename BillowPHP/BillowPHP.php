@@ -8,6 +8,9 @@ define('APP_PATH',ROOT_PATH.'App/');
 define('RUNTIME_PATH',ROOT_PATH.'Runtime/');
 define('CACHE_PATH',RUNTIME_PATH.'Cache/');
 define('LIB_PATH',ROOT_PATH.'BillowPHP/Libs/');
+define('CONFIG_PATH',ROOT_PATH.'BillowPHP/Conf/');
+//核心代码 路径
+define('CORE_PATH',ROOT_PATH.'BillowPHP/Core/');
 
 /**根据url转发*/
 //获取url参数
@@ -62,7 +65,12 @@ if(!file_exists($controller_class_file_path)){
 }
 
 //引入父控制器类
-require_once('BillowPHP/Core/Controller/Controller.class.php');
+require_once(CORE_PATH.'Controller/Controller.class.php');
+//引入父Model类
+require_once(CORE_PATH.'Model/Model.class.php');
+//引入核心函数 function
+require_once(CORE_PATH.'Function/function.php');
+
 
 //引入对应的控制器类
 require_once($controller_class_file_path);
