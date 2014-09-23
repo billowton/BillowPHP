@@ -1,2 +1,3 @@
 BillowPHP 开源框架
-author:biillowton@foxmail.com
+author:billowton@foxmail.com
+版本 ： v0.1beat版
