@@ -11,10 +11,6 @@ use BillowPHP\Controller;
 			 $this->display();
 		}
 		
-		public function __call($methodname,$argsarr){
-		 // echo $methodname.'方法不存在';
-		 echo ':( sorry,页面不存在';
-		}
    }
 
 
