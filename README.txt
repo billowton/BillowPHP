@@ -1,6 +1,6 @@
 BillowPHP 开源框架
 author:billowton@foxmail.com
-版本 ： v0.1beat版
+版本 ： 0.1beat版 (v0.1.1)
 
 目录结构
   /---               根目录
