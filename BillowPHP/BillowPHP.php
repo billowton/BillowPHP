@@ -38,7 +38,8 @@ if(isset($query_array[1])){
        $controllerName = ucfirst($query_array[1]);
 }
 if(isset($query_array[2])){
-       $methodName = ucfirst($query_array[2]);
+	   //方法小写
+       $methodName =  strtolower($query_array[2]);
 }
 
 

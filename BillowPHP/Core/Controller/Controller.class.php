@@ -50,6 +50,11 @@ class Controller extends \Smarty{
 		$template_file = $this->templates_dir.$template.$ext;
 		parent::display($template_file);
 	}
+	
+	public function __call($methodname,$argsarr){
+		 // echo $methodname.'方法不存在';
+		 echo ':( sorry,页面不存在';
+		}
 
 
 }
