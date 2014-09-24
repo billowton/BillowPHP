@@ -10,9 +10,9 @@ author:billowton@foxmail.com
    |  |	 |-View              页面模版（用于smarty）  
    |  |-BillowPHP    框架核心目录
    |  |	 |-Core      核心文件
-   |  |	   |-Controller   父类控制器(用于控制器初始化前加载配置等)
-   |  |    |-Model        模型类
-   |  |    |-Function     核心函数库
+   |  |	 |  |-Controller   父类控制器(用于控制器初始化前加载配置等)
+   |  |  |  |-Model        模型类
+   |  |  |  |-Function     核心函数库
    |  |  |-Libs       核心库文件 (包含smarty)
    |  |  |-Conf       配置文件（用于配置数据库设置）
    |  |	 |-BillowPHP.php  框架引导文件
