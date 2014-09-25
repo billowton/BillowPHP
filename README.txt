@@ -27,3 +27,5 @@ URL  访问方式   http://host/index.php?s=/模块/控制器/方法
 	   1.select() 方法没有问题               比如 M('table')->select()
            2.where() 方法暂时只支持 数组传参     如M('table')->where(array('id'=>1,'name'=>'BillowtonPHP'))->select() 
 	   3.delete() 方法暂时支持通过where()和单主键删除  比如：M('table')->where(array('id'=>1,'name'=>'BillowtonPHP'))->delete()   M('table')->delete(1) 《删除主键为1的记录，暂不支持联合主键》
+           4.add()   方法暂时只支持数组  比如M('table')->add(array('name'=>'BillowPHP'));
+           5.save() 方法暂时只支持 数组传参     如M('table')->where(array('id'=>1,'name'=>'BillowtonPHP'))->save(array('name'=>'BillowPHP'));
