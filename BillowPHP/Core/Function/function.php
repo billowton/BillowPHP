@@ -7,6 +7,6 @@ use BillowPHP\Model;
 * 参数 $model 数据模型
 *author:billowton@foxmail.com
 */
-function M($model){
+function M($model=null){
 	return new Model($model);
 }
