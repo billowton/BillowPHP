@@ -1,6 +1,6 @@
 ﻿BillowPHP 开源框架
 author:billowton@foxmail.com
-版本 ： 0.1beat版 (v0.1.1)
+版本 ： 0.1Release版 (v 0.1.3)
 
 目录结构
   /--root               根目录
@@ -29,3 +29,10 @@ URL  访问方式   http://host/index.php?s=/模块/控制器/方法
 	   3.delete() 方法暂时支持通过where()和单主键删除  比如：M('table')->where(array('id'=>1,'name'=>'BillowtonPHP'))->delete()   M('table')->delete(1) 《删除主键为1的记录，暂不支持联合主键》
            4.add()   方法暂时只支持数组  比如M('table')->add(array('name'=>'BillowPHP'));
            5.save() 方法暂时只支持 数组传参     如M('table')->where(array('id'=>1,'name'=>'BillowtonPHP'))->save(array('name'=>'BillowPHP'));
+           
+          
+///下一版本将完善Model如下方法
+              1.find()
+	      2.order()
+              3.limt()
+              
