@@ -35,5 +35,5 @@ URL  访问方式   http://host/index.php?s=/模块/控制器/方法
               1.find()
 	      2.order()
               3.limit()
-            联合查询等
+            联合查询等d
               
