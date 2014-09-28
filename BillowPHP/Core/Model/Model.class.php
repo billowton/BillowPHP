@@ -307,6 +307,17 @@ class Model{
 
 	}
 
+   /**
+    * [query 执行原生sql语句]
+    * @param  string $sql [sql语句]
+    * @return [type]      [mysql_qurey结果]
+    */
+   public function query($sql='')
+   {
+   	//连接数据
+		$this->connect_db();
+   	  return mysql_query($sql);
+   }
 
 
 	//dml操作之前
