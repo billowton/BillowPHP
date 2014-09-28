@@ -69,6 +69,8 @@ if(!file_exists($controller_class_file_path)){
 require_once(CORE_PATH.'Controller/Controller.class.php');
 //引入父Model类
 require_once(CORE_PATH.'Model/Model.class.php');
+//引入父ViewModel类
+require_once(CORE_PATH.'Model/ViewModel.class.php');
 //引入核心函数 function
 require_once(CORE_PATH.'Function/function.php');
 
