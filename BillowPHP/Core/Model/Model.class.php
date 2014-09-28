@@ -12,9 +12,11 @@ class Model{
     public $db_conf_array= array(); //数据库配置项
 	public $conn;    //数据库连接资源
     public $condition_arr; //查询条件
-	public $model_name;
-	public $limit_sql;
-	public $conditon_sql;
+	public $model_name;   ///模型名（数据库表名）
+	public $limit_sql;    //限制语句
+ 	public $conditon_sql;  //查询条件语句
+ 	public $order_sql;  //排序语句
+ 
 
 	public function __construct($model_name=null){
 		//加载配置项
@@ -146,7 +148,8 @@ class Model{
 		$this->pre_dml();
 		$conditon_sql = $this->conditon_sql;
 		$limit_sql = $this->limit_sql;
-		$sql = 'select * from '.$this->model_name.$conditon_sql.$limit_sql;
+		$order_sql = $this->order_sql;
+		$sql = 'select * from '.$this->model_name.$conditon_sql.$order_sql.$limit_sql;
 
 		$rs = mysql_query($sql,$this->conn);
 		if(!$rs){  //查询结果为空
@@ -260,9 +263,18 @@ class Model{
 		
 	}
 
-	//排序
-	public function order(){
-		
+	//排序语句
+	/**
+	 * [order 排序语句]
+	 * @param [string] $order_sql [排序语句]
+	 * @return [type] [对象本身]
+	 */
+	public function order($order_sql=null){
+		if (!$order_sql) {
+			die('error: 排序参数不得为空,请检查');
+		}
+		$this->order_sql = ' order by '.$order_sql;
+		return $this;
 	}
 
 
@@ -277,7 +289,7 @@ class Model{
 	 * @return [$this]         [对象本身]
 	 */
 	public function limit($param1=null,$param2=null){
-		if(!$param1){
+		if($param1===null){
 
 			die('error: limit方法参数不得为空（至少传一个参数）');
 		}
