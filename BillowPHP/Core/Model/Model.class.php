@@ -143,6 +143,10 @@ class Model{
 		$conditon_sql = $this->pre_dml();
 		$sql = 'select * from '.$this->model_name.$conditon_sql;
 		$rs = mysql_query($sql,$this->conn);
+		if(!$rs){  //查询结果为空
+                  return array();
+
+			}
 		$result_array = array();
 		while($row = mysql_fetch_array($rs)){
 		   array_push($result_array,$row);
@@ -169,8 +173,60 @@ class Model{
 		return $this;
 	}
 
-	//查找单个
+	//查找单条记录
 	public function find($id=null){
+		//连接数据，返回查询语句等操作
+		$conditon_sql = $this->pre_dml();//如果通过条件查询
+        
+
+
+		if ($id) {  //通过主键查询
+			
+		
+			  //需要手动找到primary key通过desc table
+			$find_primary_key_sql = "desc ".$this->model_name;
+			$find_primary_key_rs = mysql_query($find_primary_key_sql,$this->conn);
+			
+			//表主键名;
+			$primary_key_name = null;
+			while($row=mysql_fetch_array($find_primary_key_rs)){
+			    if($row['Key']=='PRI'){
+				   $primary_key_name = $row['Field'];
+				   break;
+				}
+			
+			}
+			if(!$primary_key_name){
+			   echo ':( sorry 查找出错了，数据库未指定主键';
+			   exit;
+			}
+          $conditon_sql = " where ".$primary_key_name."=".$id;
+		
+		}elseif (!$conditon_sql) {  //查询条件和查询主键都为空则报错
+             die('error：查询条件不足，无法查询');
+			
+		}
+		
+
+
+		$sql = 'select * from '.$this->model_name.$conditon_sql.' limit 1';
+			$rs = mysql_query($sql,$this->conn);
+
+			
+			$result_array = array();
+			if(!$rs){  //查询结果为空
+                  return array();
+
+			}
+			while($row = mysql_fetch_array($rs)){
+			   array_push($result_array,$row);
+			}
+			 //在返回数据之前进行一些操作（比如关闭连接释放资源等操作）
+			mysql_free_result($rs);
+			$this->after_dml();
+			return $result_array;
+		
+		
 		
 	}
 
@@ -186,6 +242,7 @@ class Model{
 
 	//dml操作之前
 	public function pre_dml(){
+
 		//连接数据
 		$this->connect_db();
 		//判断模型名字是否为空
@@ -193,6 +250,15 @@ class Model{
 			 echo "error: dml操作 M() 方法必须传模型名 参数 如M('table')";
 			 exit;
 			}
+
+         //查询数据库中对应的表是否存在
+         $table_exist_sql = " SHOW TABLES LIKE '%".$this->model_name."%'";
+         
+         if(!mysql_query($table_exist_sql)){
+             die('error: 数据库中不存在此表或模型，请检查!');
+
+         }
+
 		//拼接sql语句
 		//先查询是否有条件
 		 $conditon_sql = '';
@@ -222,21 +288,39 @@ class Model{
 
 	//连接数据库
 	public function connect_db(){
+
 		//数据库名
 		$db_name = $this->db_conf_array['DB_NAME'];
+
+        //主机名
+		if (!$this->db_conf_array['DB_HOST']) {
+			$host = '127.0.0.1';
+		} else {
+			$host = $this->db_conf_array['DB_HOST'];
+		}
+		
+		//端口号
+		if (!$this->db_conf_array['DB_PORT']) {
+			$db_port = 3306;
+		}else{
+		   $db_port = $this->db_conf_array['DB_PORT'];
+		}
 		//连接数据库
 		$this->conn = mysql_connect(
-			$this->db_conf_array['DB_HOST'],
+			$host.':'.$db_port,
 			$this->db_conf_array['DB_USER'],
 			$this->db_conf_array['DB_PWD']
 			);
 		if(!$this->conn){
 		   die(':( 连接数据库失败,请检查配置文件中用户名密码数据库名是否正确');
 		}
-		
 
 		//选择数据库
-		mysql_select_db($db_name,$this->conn);
+		if(!mysql_select_db($db_name,$this->conn)){
+
+				die('error: 没有选择数据库，或者数据库不存在');
+
+		}
 	}
 }
 
