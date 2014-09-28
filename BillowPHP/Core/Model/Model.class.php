@@ -13,6 +13,8 @@ class Model{
 	public $conn;    //数据库连接资源
     public $condition_arr; //查询条件
 	public $model_name;
+	public $limit_sql;
+	public $conditon_sql;
 
 	public function __construct($model_name=null){
 		//加载配置项
@@ -32,7 +34,7 @@ class Model{
     
 	//增
 	/**
-	*param $data_arr  要插入数据库的数组
+	*@param $data_arr  要插入数据库的数组
 	*/
 	public function add($data_arr=null){
         //连接数据库等一系列操作
@@ -65,13 +67,14 @@ class Model{
 
 	//删
 	/**
-	*param $id  删除的主键（可以为空，则从条件where中判断）
+	*@param $id  删除的主键（可以为空，则从条件where中判断）
 	*/
 	public function delete($id=null){
+		$this->pre_dml();
+		$conditon_sql = $this->conditon_sql;
 		
 		//如果直接通过id删除
 		if($id){
-			$conditon_sql = $this->pre_dml();
 			//需要手动找到primary key通过desc table
 			$find_primary_key_sql = "desc ".$this->model_name;
 			$find_primary_key_rs = mysql_query($find_primary_key_sql,$this->conn);
@@ -93,7 +96,6 @@ class Model{
 
 
 		}else{
-			$conditon_sql = $this->pre_dml();
 			//如果删除id为空 ，且查询条件也为空
 			//则报错
 			if(!$conditon_sql){
@@ -112,7 +114,8 @@ class Model{
 
 	public function save($data_arr=null){
 		//连接数据库等一系列操作
-		$conditon_sql = $this->pre_dml();
+		$this->pre_dml();
+		$conditon_sql = $this->conditon_sql;
 		//
 		if(!$conditon_sql){
 		   echo 'error:  修改条件不足，请完善where()';
@@ -140,8 +143,11 @@ class Model{
 
 	//查
 	public function select(){
-		$conditon_sql = $this->pre_dml();
-		$sql = 'select * from '.$this->model_name.$conditon_sql;
+		$this->pre_dml();
+		$conditon_sql = $this->conditon_sql;
+		$limit_sql = $this->limit_sql;
+		$sql = 'select * from '.$this->model_name.$conditon_sql.$limit_sql;
+
 		$rs = mysql_query($sql,$this->conn);
 		if(!$rs){  //查询结果为空
                   return array();
@@ -160,7 +166,7 @@ class Model{
 	
 	//条件
 	/**
-	*param $condition  查询条件的数组
+	*@param $condition  查询条件的数组
 	*/
 	
 	public function where($condition=null){
@@ -169,15 +175,39 @@ class Model{
 		  exit;
 		}
 		$this->condition_arr = $condition;
+
+		//拼接sql语句
+		//先查询是否有条件
+		 $conditon_sql = '';
+		if($this->condition_arr){
+			//以where 开始
+			$conditon_sql = ' where ';
+			$i = 0;
+			$arr_count = count($this->condition_arr);
+		   foreach($this->condition_arr as $k=>$v){
+		     $conditon_sql .= $k.'='."'".$v."' ";
+			 $i++;
+			 //如果不是最后一个条件则加上 and
+			 if($i<$arr_count){
+					$conditon_sql.=' and ';
+			 }
+		   }
+		}
+		
+		$this->conditon_sql =  $conditon_sql;
 		
 		return $this;
 	}
 
-	//查找单条记录
+	/**
+	 * [find 查找单条记录]
+	 * @param  [string] $id [查询的主键id]
+	 * @return [array]     [查询的结果数组]
+	 */
 	public function find($id=null){
 		//连接数据，返回查询语句等操作
-		$conditon_sql = $this->pre_dml();//如果通过条件查询
-        
+		$this->pre_dml();//如果通过条件查询
+        $conditon_sql = $this->conditon_sql;	
 
 
 		if ($id) {  //通过主键查询
@@ -235,10 +265,37 @@ class Model{
 		
 	}
 
-	//限制数目
-	public function limt(){
-		
+
+
+
+
+
+	/**
+	 * [limt 限制数目]
+	 * @param  [int] $param1 [显示的记录数]  //如果第二个参数不为空则表示开始条数 
+	 * @param  [int] $param2 [查询的条数]
+	 * @return [$this]         [对象本身]
+	 */
+	public function limit($param1=null,$param2=null){
+		if(!$param1){
+
+			die('error: limit方法参数不得为空（至少传一个参数）');
+		}
+		if(!$param2){
+			$param1 = intval($param1);
+		   $this->limit_sql = ' limit '.$param1;
+
+		}else{
+			$param1 = intval($param1);
+			$param2 = intval($param2);
+		   $this->limit_sql = ' limit '.$param1.','.$param2;
+
+		}
+		return $this;
+
 	}
+
+
 
 	//dml操作之前
 	public function pre_dml(){
@@ -259,24 +316,7 @@ class Model{
 
          }
 
-		//拼接sql语句
-		//先查询是否有条件
-		 $conditon_sql = '';
-		if($this->condition_arr){
-			//以where 开始
-			$conditon_sql = ' where ';
-			$i = 0;
-			$arr_count = count($this->condition_arr);
-		   foreach($this->condition_arr as $k=>$v){
-		     $conditon_sql .= $k.'='."'".$v."' ";
-			 $i++;
-			 //如果不是最后一个条件则加上 and
-			 if($i<$arr_count){
-					$conditon_sql.=' and ';
-			 }
-		   }
-		}
-		return $conditon_sql;
+		
 	}
 
 
