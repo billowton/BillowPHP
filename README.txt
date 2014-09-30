@@ -1,6 +1,6 @@
 ﻿BillowPHP 开源框架
 author:billowton@foxmail.com
-版本 ： 0.1Release版 (v 0.1.5)
+版本 ： 0.1Release版 (v 0.1.6)
 
 目录结构
   /--root               根目录
@@ -33,6 +33,11 @@ URL  访问方式   http://host/index.php?s=/模块/控制器/方法
            7.order()  可以根据字段排序 比如 M('table')->order('id desc')->select();
            8.limit()  限制查询的记录数  单个参数表示查询指定数目记录，两个参数（第一个参数表示查询的开始记录，第二个参数表示查询的数目）
           
+    视图模型  ViewModel  已经完善
+    只需继承ViewModel  
+            
+
+
 ///下一版本将完善Model如下方法
             联合查询
               
