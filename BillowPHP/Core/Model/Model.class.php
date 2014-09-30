@@ -325,6 +325,8 @@ class Model{
 
 		//连接数据
 		$this->connect_db();
+		//set names utf8;
+		mysql_query('set names utf8',$this->conn);
 		//判断模型名字是否为空
 			if(!$this->model_name){
 			 echo "error: dml操作 M() 方法必须传模型名 参数 如M('table')";
