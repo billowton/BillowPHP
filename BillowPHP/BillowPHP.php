@@ -75,8 +75,10 @@ require_once(CORE_PATH.'Model/ViewModel.class.php');
 require_once(CORE_PATH.'Function/function.php');
 
 
+
 //引入对应的控制器类
 require_once($controller_class_file_path);
+
 
 //实例化控制器，并调用方法
  $controller_classname_namespace = "$moduleName\\Controller\\".$controller_classname;
