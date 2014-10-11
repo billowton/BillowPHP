@@ -1,10 +1,14 @@
 <?php 
 /**BillowPHP框架
 *author：Billowton@foxmail.com
-* v.01
+* v0.1
 */
+
 define('ROOT_PATH',$_SERVER['DOCUMENT_ROOT'].'/');
-define('APP_PATH',ROOT_PATH.'App/');
+//如果APP未定义则默认为App 
+if(!defined('APP')) define('APP','App');
+define('APP_PATH',ROOT_PATH.APP.'/');
+
 define('RUNTIME_PATH',ROOT_PATH.'Runtime/');
 define('CACHE_PATH',RUNTIME_PATH.'Cache/');
 define('LIB_PATH',ROOT_PATH.'BillowPHP/Libs/');
@@ -17,9 +21,85 @@ define('CORE_PATH',ROOT_PATH.'BillowPHP/Core/');
 $query_string = $_SERVER['QUERY_STRING'];
 
 /**默认的模块名/控制器名/方法名*/
-$moduleName = 'Home';
+//if(!defined('DEFAULT')){
+  $moduleName = 'Home';
+//}
+/*
+else{
+  $moduleName = DEFAULT;
+}*/
+
 $controllerName = 'Index';
 $methodName = 'index';
+
+//如果没有目录创建初始结构
+//
+if('Home'=='Home'){
+    if(!file_exists(APP_PATH)){
+         mkdir(APP_PATH);  //创建应用目录
+          if(!file_exists(APP_PATH.'Home/')){
+            mkdir(APP_PATH.'Home/'); //创建Home模块
+                if(!file_exists(APP_PATH.'Home/Controller/')){
+                    mkdir(APP_PATH.'Home/Controller/'); //控制器
+                       if(!file_exists(APP_PATH.'Home/Controller/IndexController.class.php')){
+                              //创建IndexController.class.php
+                              $fp = fopen(APP_PATH.'Home/Controller/IndexController.class.php','w+');
+                              $string = '<?php
+
+namespace Home\Controller;
+use BillowPHP\Controller;
+   class IndexController extends Controller{
+      
+    public function index(){
+       
+       $this->assign("hello","hello BillowPHP<br/>欢迎使用BillowPHP v0.1Release版<br/>如有问题欢迎指正<br/>Author:billowton@foxmail.com");
+       $this->display();
+    }
+
+    
+   }
+
+
+
+';
+                              fwrite($fp,$string);
+                              fclose($fp);
+                              
+                       }
+                }
+                if(!file_exists(APP_PATH.'Home/Model/')){
+                    mkdir(APP_PATH.'Home/Model/'); //模型
+                }
+                if(!file_exists(APP_PATH.'Home/View/')){
+                    mkdir(APP_PATH.'Home/View/'); //视图
+                    if(!file_exists(APP_PATH.'Home/View/Index/')){
+                         mkdir(APP_PATH.'Home/View/Index/');
+                         $fp = fopen(APP_PATH.'Home/View/Index/index.html',"w+");
+                         $string = '<!doctype html>
+<html lang=en>
+ <head>
+  <meta charset=UTF-8>
+  <meta name=Author content=billowton@foxmail.com>
+  <title>BillowPHP欢迎页</title>
+ </head>
+ <body>
+       <center><h1><font color=green>:){$hello}</font><h1></center>
+ </body>
+</html>
+';
+                              fwrite($fp,$string );
+                              fclose($fp);
+
+                    }
+                }
+            }
+          }
+ }
+
+      
+
+
+
 
 //把参数分割成数组  （根据‘/’）
 $query_array = explode('/',substr($query_string,strpos($query_string,'=')+1));
@@ -49,7 +129,7 @@ $controller_classname = $controllerName.'Controller';
 
 /***拼接成文件路径。*/
 
-$module_path = 'App/'.$moduleName;
+$module_path = APP.'/'.$moduleName;
 $controller_class_file_path = $module_path.'/Controller/'.$controllerName.'Controller.class.php';
 
 //echo $module_path;
