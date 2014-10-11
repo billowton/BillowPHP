@@ -1,6 +1,6 @@
 ﻿BillowPHP 开源框架
 author:billowton@foxmail.com
-版本 ： 0.1Release版 (v 0.1.6)
+版本 ： 0.1Release版 (v 0.1.7)
 
 目录结构
   /--root               根目录
@@ -36,7 +36,11 @@ URL  访问方式   http://host/index.php?s=/模块/控制器/方法
     视图模型  ViewModel  已经完善
     只需继承ViewModel  
             
+ 
 
+/**修改部分
+*  添加自动创建App目录及目录下文件
+**/
 
 ///下一版本将完善Model如下方法
             联合查询
