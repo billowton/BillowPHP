@@ -194,7 +194,8 @@ require_once(CORE_PATH.'Model/Model.class.php');
 require_once(CORE_PATH.'Model/ViewModel.class.php');
 //引入核心函数 function
 require_once(CORE_PATH.'Function/function.php');
-
+//引入核心控制器生成器类库
+require_once(CORE_PATH.'ControllerFactory.class.php');
 
 
 //引入对应的控制器类
@@ -204,17 +205,11 @@ require_once($controller_class_file_path);
 //实例化控制器，并调用方法
  $controller_classname_namespace = "$moduleName\\Controller\\".$controller_classname;
 
-try{
-  $refl = new ReflectionClass($controller_classname_namespace);
-  //传递构造参数（模版地址等等信息）
-  $args = array(
-			'moduleName'=> $moduleName,
-			'controllerName'=>$controllerName,
-           );
-  $controller_instance = $refl->newInstance($args);
-  $controller_instance->$methodName();
-}catch(Exception $e){
-   var_dump($e);
-}
+  //通过控制器生成器实例化控制器
+   $controller_factory = new BillowPHP\ControllerFactory();
+   $controller = $controller_factory->getInstance($controller_classname_namespace,$moduleName,$controllerName);
+
+   //调用控制器对应的方法
+   $controller->$methodName();
 
 ?>
