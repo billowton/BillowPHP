@@ -7,8 +7,8 @@ author:billowton@foxmail.com
   /--root               根目录
    |  |-App            应用目录
    |  |  |-Home         Home 模块（默认模块，可以自己添加模块）
-   |  |  |	 |-Controller       控制器
-   |  |  |	 |-View              页面模版（用于smarty）  
+   |  |  |	|-Controller       控制器
+   |  |  |	|-View              页面模版（用于smarty）  
    |  |-BillowPHP    框架核心目录
    |  |	 |-Core      核心文件
    |  |	 |  |-Controller   父类控制器(用于控制器初始化前加载配置等)
