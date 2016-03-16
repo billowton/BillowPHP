@@ -1,6 +1,6 @@
 <?php 
 /**
- * @version        v 0.1.7
+ * @version        v 0.1.8
  * @author billowton <[billowton@foxmail.com]>
 **/
 //入口文件
